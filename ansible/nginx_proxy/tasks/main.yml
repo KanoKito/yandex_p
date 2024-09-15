@@ -1,0 +1,10 @@
+---
+# tasks file for nginx_proxy
+- name: Запуск прокси
+  ansible.builtin.template:
+    src: default.j2
+    dest: /etc/nginx/sites-available/default
+  when: "'vm1' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_1
+  notify: "Nginx Reloader"
+
+
