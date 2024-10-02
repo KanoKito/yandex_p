@@ -1,9 +1,9 @@
 upstream backend  {
-    server 10.10.0.3;
-    server 10.10.0.4;
+    server {{ hostvars['vm2'].ansible_host }} weight=5;
+    server {{ hostvars['vm3'].ansible_host }};
 }
 server {
-    listen 3000;
+    listen 80;
     location / {
         proxy_pass http://backend;
     }

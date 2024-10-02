@@ -2,10 +2,12 @@
 # tasks file for default_packages
 - name: update apt cache 
   shell: 'apt update'
+- name: upgrade
+  shell: 'apt upgrade -y'
 - name: Установка программ #Имя задачи 
   apt: #Используемый модуль
     name: "{{ item }}" #Имя пакета из цикла
     state: present #Параметр действия. present - установить, absent - удалить
   loop:
     - "{{ packages_to_install }}" #Цикл будет перебирать все значения из переменной "packages"
-  when: ansible_distribution == "Debian" # Выполнится только на Debian системах 
+  when: ansible_distribution == "ubuntu" # Выполнится только на Ubuntu системах 
