@@ -1,6 +1,6 @@
 upstream backend  {
-    server {{ hostvars['vm2'].ansible_host }} weight=5;
-    server {{ hostvars['vm3'].ansible_host }};
+    server 10.10.0.3 weight=5;
+    server 10.10.0.4;
 }
 server {
     listen 80;

@@ -4,11 +4,11 @@
   ansible.builtin.template:
     src: index.j2
     dest: /var/www/html/index.nginx-debian.html
-  when: "'vm2' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm2
+  when: "'vm-2' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm2
   notify: "Nginx Reloader"
 - name: Подмена веб-страницы vm3
   ansible.builtin.template:
     src: index.j2
     dest: /var/www/html/index.nginx-debian.html
-  when: "'vm3' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm3
+  when: "'vm-3' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm3
   notify: "Nginx Reloader"

@@ -1,23 +1,25 @@
 ---
 # tasks file for nginx_proxy
+- name: Установка nginx
+  ansible.builtin.shell: |
+    apt install nginx -y
+
 - name: Запуск прокси nginx
   ansible.builtin.template:
     src: default.j2
     dest: /etc/nginx/sites-available/default
-  when: "'vm-1' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_1
   notify: "Nginx Reloader"
 
 - name: Установка haproxy
   ansible.builtin.shell: |
     apt install haproxy -y
-  when: "'vm-1' in inventory_hostname" 
+  
 - name: Запуск прокси haproxy
   ansible.builtin.template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
-  when: "'vm-1' in inventory_hostname" # Выполнится только тогда, когда в имени есть vm_1
-
+ 
 - name: Запуск haproxy
   ansible.builtin.shell: |
     systemctl restart haproxy
-  when: "'vm-1' in inventory_hostname" 
+ 
