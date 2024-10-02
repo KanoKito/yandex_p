@@ -28,8 +28,8 @@ default_backend pgsql_backend
 # Настройка backend для PostgreSQL
 backend pgsql_backend
 balance roundrobin
-server pgsql1 10.10.0.19:5432 check inter 10s fall 3 rise 12
-server pgsql2 10.10.0.17:5432 check backup
+server pgsql1 10.10.0.3:5432 check inter 10s fall 3 rise 12
+server pgsql2 10.10.0.4:5432 check backup
 
 
 ## Мониторинг
