@@ -1,3 +1,5 @@
+#########################################################
+Создание дампа
 dumpbu.sh
 
 #!/bin/bash
@@ -16,7 +18,7 @@ DEST_DIR="/root/backup/SQL"
 ARCHIVE_FILE="${DUMP_FILE}.tar.gz"
 
 # делаем дамп базы
-sudo -u postgres pg_dump -F c $DB_NAME > $DUMP_FILE
+sudo -u postgres pg_dump $DB_NAME > $DUMP_FILE
 # архивируем дамп файл
 tar -czf $ARCHIVE_FILE $DUMP_FILE
 
@@ -34,8 +36,8 @@ else
     echo "Ошибка!."
 fi
 
-######################################
-
+#########################################################
+Создание файлового архива сервиса
 wikibu.sh
 
 #!/bin/bash
@@ -64,7 +66,7 @@ fi
 
 
 #########################################################
-
+Восстановление фалов сервиса
  wikirs.sh
 
 
@@ -102,42 +104,45 @@ fi
 
 
 
-#######################################################################
+
 #########################################################
+
+Восстановление из дампа базы Wiki
 nano dumprs.sh
 
-Восстановление дампа базы Wiki
 #!/bin/bash
 if [[ -n $1 ]]; then
- ARCHIVE_NAME="$1.tar.gz"
+ ARCHIVE_NAME="$1.dump.tar.gz"
 else
  echo "Имя архива не введено"
  exit
 fi
-
+DB_NAME="yp_wiki"
 SOURCE_ARCHIVE="/root/backup/SQL/$ARCHIVE_NAME"
 SOURCE_HOST="vm-1"
 SOURCE_USER="root"
-TARGET_DIR="/root/dump/"  
+TARGET_DIR="/root/dump/"
 
 
-# Передача арива на хост с базой Вики
+# Передача архива на хост с базой Вики и восстановление
 scp $SOURCE_USER@$SOURCE_HOST:$SOURCE_ARCHIVE $TARGET_DIR
 
 # Проверка успешности выполнения
 if [ $? -eq 0 ]; then
     # распаковка архива на другой хост
-    tar -Pxzf $TARGET_DIR/$ARCHIVE_NAME -C /
+    tar -Pxzf $TARGET_DIR/$ARCHIVE_NAME -C /$TARGET_DIR/
+    sudo -u postgres psql $DB_NAME < $TARGET_DIR/$1.dump
 
     # проверка успешности выполнения
     if [ $? -eq 0 ]; then
-        echo "Передача и распаковка выполнены."
+        echo "Распаковка и восстановление выполнены."
     else
         echo "Распаковка не выполнена."
     fi
 else
     echo "Передача не выполнена."
 fi
+
 
 
 
