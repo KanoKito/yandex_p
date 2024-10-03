@@ -1,0 +1,144 @@
+dampbu.sh
+
+#!/bin/bash
+if [[ -n $1 ]]; then
+ DUMP_FILE="$1.sql"
+else
+ DUMP_FILE="db_dump_$(date +%Y%m%d_%H%M%S).sql"
+fi
+
+DB_NAME="my_wiki"
+DB_USER="postgres"
+DB_HOST="localhost"
+DEST_HOST="root@vm-1"
+DEST_DIR="/root/backup/SQL"
+
+ARCHIVE_FILE="${DUMP_FILE}.tar.gz"
+
+# делаем дамп базы
+sudo -u postgres pg_dump -F c $DB_NAME > $DUMP_FILE
+# архивируем дамп файл
+tar -czf $ARCHIVE_FILE $DUMP_FILE
+
+# передаем архив на другой хост по ssh
+scp  $ARCHIVE_FILE "$DEST_HOST:$DEST_DIR"
+
+# удаляем файл дампа и архив
+rm $DUMP_FILE $ARCHIVE_FILE
+
+find ${DEST__DIR} -type f -mtime +7 -delete
+# проверка успешности выполнения
+if [ $? -eq 0 ]; then
+    echo "Дамп $DB_NAME выполнен, архив $ARCHIVE_FILE сделан и переданн $DEST_HOST в папу $DEST_DIR."
+else
+    echo "Ошибка!."
+fi
+
+######################################
+
+wikibu.sh
+
+#!/bin/bash
+if [[ -n $1 ]]; then
+ ARCHIVE_NAME="$1.tar.gz"
+else
+ ARCHIVE_NAME="archive_$(date +%Y%m%d).tar.gz"
+fi
+SOURCE_DIR="/var/www/mediawiki"
+DEST_HOST="root@vm-1"
+DEST_DIR="/root/backup"
+
+# архивируем
+tar -Pczf $ARCHIVE_NAME  $SOURCE_DIR
+
+# передаем архив на другой хост по ssh
+scp  $ARCHIVE_NAME $DEST_HOST:$DEST_DIR
+rm $ARCHIVE_NAME
+# проверка успешности выполнения
+if [ $? -eq 0 ]; then
+    echo "Архив $ARCHIVE_NAME сделан и передан на $DEST_HOST в папку $DEST_DIR."
+else
+    echo "Ошибка!."
+fi
+
+
+
+#########################################################
+
+ wikirs.sh
+
+
+#!/bin/bash
+if [[ -n $1 ]]; then
+ ARCHIVE_NAME="$1.sql.tar.gz"
+else
+ echo "Имя архива не введено"
+ exit
+fi
+
+SOURCE_ARCHIVE="/root/backup/SQL/$ARCHIVE_NAME"
+SOURCE_HOST="vm-1"
+SOURCE_USER="root"
+TARGET_DIR="/root/dump/"
+
+
+# Передача арива на хост с базой Вики
+scp $SOURCE_USER@$SOURCE_HOST:$SOURCE_ARCHIVE $TARGET_DIR
+
+# Проверка успешности выполнения
+if [ $? -eq 0 ]; then
+    # распаковка архива на другой хост
+    tar -Pxzf $TARGET_DIR/$ARCHIVE_NAME -C /$TARGET_DIR/
+
+    # проверка успешности выполнения
+    if [ $? -eq 0 ]; then
+        echo "Передача и распаковка выполнены."
+    else
+        echo "Распаковка не выполнена."
+    fi
+else
+    echo "Передача не выполнена."
+fi
+
+
+
+#######################################################################
+#########################################################
+nano dumprs.sh
+
+Восстановление дампа базы Wiki
+#!/bin/bash
+if [[ -n $1 ]]; then
+ ARCHIVE_NAME="$1.tar.gz"
+else
+ echo "Имя архива не введено"
+ exit
+fi
+
+SOURCE_ARCHIVE="/root/backup/SQL/$ARCHIVE_NAME"
+SOURCE_HOST="vm-1"
+SOURCE_USER="root"
+TARGET_DIR="/root/dump/"  
+
+
+# Передача арива на хост с базой Вики
+scp $SOURCE_USER@$SOURCE_HOST:$SOURCE_ARCHIVE $TARGET_DIR
+
+# Проверка успешности выполнения
+if [ $? -eq 0 ]; then
+    # распаковка архива на другой хост
+    tar -Pxzf $TARGET_DIR/$ARCHIVE_NAME -C /
+
+    # проверка успешности выполнения
+    if [ $? -eq 0 ]; then
+        echo "Передача и распаковка выполнены."
+    else
+        echo "Распаковка не выполнена."
+    fi
+else
+    echo "Передача не выполнена."
+fi
+
+
+
+#######################################################################
