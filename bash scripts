@@ -1,4 +1,4 @@
-dampbu.sh
+dumpbu.sh
 
 #!/bin/bash
 if [[ -n $1 ]]; then
