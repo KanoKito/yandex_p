@@ -9,5 +9,5 @@ packages_to_install:
   - curl
   - wget
   - nginx
-  - samba
-  - samba-common-bin  
+  - unison
+   
