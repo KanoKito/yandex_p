@@ -6,9 +6,9 @@ virtual_machines = {
       vm_cpu       = 2 # Кол-во ядер процессора
       core_fraction = 5 # Гарантированная доля vCPU
       ram          = 2 # Оперативная память в ГБ
-      disk         = 20 # Объём диска в ГБ
+      disk         = 15 # Объём диска в ГБ
       disk_name    = "deb-1-disk" # Название диска
-      template     = "fd801rku4j14mv7fs703" # ID образа ОС для использования
+      template     = "fd80bm0rh4rkepi5ksdi" # ID образа ОС для использования
       ip_address = "10.10.0.5"      
     },
     "vm-2" = {
@@ -18,9 +18,9 @@ virtual_machines = {
       vm_cpu       = 2 # Кол-во ядер процессора
       core_fraction = 5 # Гарантированная доля vCPU
       ram          = 2 # Оперативная память в ГБ
-      disk         = 20 # Объём диска в ГБ
+      disk         = 15 # Объём диска в ГБ
       disk_name    = "deb-2-disk" # Название диска
-      template     = "fd801rku4j14mv7fs703" # ID образа ОС для использования
+      template     = "fd80bm0rh4rkepi5ksdi" # ID образа ОС для использования
       ip_address = "10.10.0.3"
     },
     "vm-3" = {
@@ -30,9 +30,21 @@ virtual_machines = {
       vm_cpu       = 2 # Кол-во ядер процессора
       core_fraction = 5 # Гарантированная доля vCPU
       ram          = 2 # Оперативная память в ГБ
-      disk         = 20 # Объём диска в ГБ
+      disk         = 15 # Объём диска в ГБ
       disk_name    = "deb-3-disk" # Название диска
-      template     = "fd801rku4j14mv7fs703" # ID образа ОС для использования
+      template     = "fd80bm0rh4rkepi5ksdi" # ID образа ОС для использования
       ip_address = "10.10.0.4"
+    }
+ "vm-4" = {
+      vm_name      = "vm3" # Имя ВМ
+      name         = "vm3"
+      vm_desc      = "Яндекс практикум"
+      vm_cpu       = 2 # Кол-во ядер процессора
+      core_fraction = 5 # Гарантированная доля vCPU
+      ram          = 2 # Оперативная память в ГБ
+      disk         = 15 # Объём диска в ГБ
+      disk_name    = "deb-3-disk" # Название диска
+      template     = "fd80bm0rh4rkepi5ksdi" # ID образа ОС для использования
+      ip_address = "10.10.0.6"
     }
 }
