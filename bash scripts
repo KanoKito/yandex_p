@@ -6,7 +6,7 @@ dumpbu.sh
 if [[ -n $1 ]]; then
  DB_NAME="$1"
 else
- DB_NAME="new_wiki"
+ $DB_NAME="new_wiki"
 fi
 if [[ -n $2 ]]; then
  DUMP_FILE="$2.dump"
@@ -117,7 +117,7 @@ dumprs.sh
 
 #!/bin/bash
 if [[ -n $1 ]]; then
- DB_NAME ="$1"
+ DB_NAME="$1"
 else
  echo "Имя базы не введено"
  exit
@@ -141,7 +141,7 @@ scp $SOURCE_USER@$SOURCE_HOST:$SOURCE_ARCHIVE $TARGET_DIR
 if [ $? -eq 0 ]; then
     # распаковка архива на другой хост
     tar -Pxzf $TARGET_DIR/$ARCHIVE_NAME -C /$TARGET_DIR/
-    sudo -u postgres psql $DB_NAME < $TARGET_DIR/$1.dump
+    sudo -u postgres psql $DB_NAME < $TARGET_DIR/$2.dump
 
     # проверка успешности выполнения
     if [ $? -eq 0 ]; then
