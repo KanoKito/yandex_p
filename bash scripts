@@ -4,12 +4,15 @@ dumpbu.sh
 
 #!/bin/bash
 if [[ -n $1 ]]; then
- DUMP_FILE="$1.sql"
+ DB_NAME="$1"
 else
- DUMP_FILE="db_dump_$(date +%Y%m%d_%H%M%S).sql"
+ DB_NAME="new_wiki"
 fi
-
-DB_NAME="my_wiki"
+if [[ -n $2 ]]; then
+ DUMP_FILE="$2.dump"
+else
+ DUMP_FILE="db_dump_$(date +%Y%m%d_%H%M%S).dump"
+fi
 DB_USER="postgres"
 DB_HOST="localhost"
 DEST_HOST="root@vm-1"
@@ -112,12 +115,17 @@ dumprs.sh
 
 #!/bin/bash
 if [[ -n $1 ]]; then
- ARCHIVE_NAME="$1.dump.tar.gz"
+ DB_NAME ="$1"
+else
+ echo "Имя базы не введено"
+ exit
+fi
+if [[ -n $2 ]]; then
+ ARCHIVE_NAME="$2.dump.tar.gz"
 else
  echo "Имя архива не введено"
  exit
 fi
-DB_NAME="yp_wiki"
 SOURCE_ARCHIVE="/root/backup/SQL/$ARCHIVE_NAME"
 SOURCE_HOST="vm-1"
 SOURCE_USER="root"
