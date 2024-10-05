@@ -15,7 +15,8 @@ else
 fi
 DB_USER="postgres"
 DB_HOST="localhost"
-DEST_HOST="root@vm-1"
+DEST_USER="root"
+DEST_HOST="vm-1"
 DEST_DIR="/root/backup/SQL"
 
 ARCHIVE_FILE="${DUMP_FILE}.tar.gz"
@@ -26,7 +27,7 @@ sudo -u postgres pg_dump $DB_NAME > $DUMP_FILE
 tar -czf $ARCHIVE_FILE $DUMP_FILE
 
 # передаем архив на другой хост по ssh
-scp  $ARCHIVE_FILE "$DEST_HOST:$DEST_DIR"
+scp  $ARCHIVE_FILE "$DEST_USER@$DEST_HOST:$DEST_DIR"
 
 # удаляем файл дампа и архив
 rm $DUMP_FILE $ARCHIVE_FILE
@@ -50,14 +51,15 @@ else
  ARCHIVE_NAME="archive_$(date +%Y%m%d).tar.gz"
 fi
 SOURCE_DIR="/var/www/mediawiki"
-DEST_HOST="root@vm-1"
+DEST_USER="root"
+DEST_HOST="vm-1"
 DEST_DIR="/root/backup"
 
 # архивируем
 tar -Pczf $ARCHIVE_NAME  $SOURCE_DIR
 
 # передаем архив на другой хост по ssh
-scp  $ARCHIVE_NAME $DEST_HOST:$DEST_DIR
+scp  $ARCHIVE_NAME $DEST_USER@$DEST_HOST:$DEST_DIR
 rm $ARCHIVE_NAME
 # проверка успешности выполнения
 if [ $? -eq 0 ]; then
